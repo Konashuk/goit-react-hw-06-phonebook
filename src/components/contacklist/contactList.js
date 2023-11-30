@@ -1,13 +1,16 @@
+import { useSelector } from 'react-redux';
 import { List, Button, Item } from './contactList.styled';
 
-export const ContactList = ({ names, onDelete }) => {
+export const ContactList = () => {
+  const contacts = useSelector(state => state.contacts);
   return (
     <List>
-      {names.map(({ name, number, id }) => {
+      {contacts.map(({ name, number, id }) => {
         return (
           <Item key={id}>
             {`${name}: ${number}`}
-            <Button onClick={() => onDelete(id)}>Delete</Button>
+            {/* <Button onClick={() => onDelete(id)}>Delete</Button> */}
+            <Button>Delete</Button>
           </Item>
         );
       })}
