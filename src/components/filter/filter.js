@@ -14,6 +14,13 @@ export const Filter = () => {
     dispatch(filters(visibleContacts));
   };
 
+  // const localData = () => {
+  //   const persistedStateJSON = localStorage.getItem(`persist:contacts`);
+  //   const persistedState = JSON.parse(persistedStateJSON);
+  //   return persistedState.contacts;
+  // };
+  // console.log(localData());
+
   // useEffect(() => {
   //   localStorage.setItem('contacts', JSON.stringify(dataContacts));
   // }, [dataContacts]);

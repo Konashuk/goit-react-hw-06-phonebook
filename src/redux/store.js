@@ -18,13 +18,6 @@ const persistConfig = {
   whitelist: ['contacts'],
 };
 
-// const localData = () => {
-//   const persistedStateJSON = localStorage.getItem(`persist:contacts`);
-//   const persistedState = JSON.parse(persistedStateJSON);
-//   return persistedState.contacts;
-// };
-// console.log(localData());
-
 const contactsSlice = createSlice({
   name: 'phonebook',
   initialState: {
@@ -49,11 +42,16 @@ const contactsSlice = createSlice({
       state.filters = action.payload;
       state.contacts = action.payload;
     },
+    deleteCont(state, action) {
+      state.contacts = state.contacts.filter(
+        item => item.id !== action.payload
+      );
+    },
   },
 });
 
 const phonebookReduser = contactsSlice.reducer;
-export const { contacts, filters } = contactsSlice.actions;
+export const { contacts, filters, deleteCont } = contactsSlice.actions;
 
 const persistedReducer = persistReducer(persistConfig, phonebookReduser);
 

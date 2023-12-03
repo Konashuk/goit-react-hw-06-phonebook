@@ -25,10 +25,10 @@ export const Phonebooks = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      {/* <ContactForm addContact={addContact} /> */}
+
       <ContactForm />
-      {/* <h2>Contacts</h2>
-      <Filter filters={filter} onUpdateFilter={filterByName} /> */}
+      <h2>Contacts</h2>
+      {/* <Filter filters={filter} onUpdateFilter={filterByName} /> */}
       <Filter />
       {/* {contacts.length > 0 && (
         <ContactList names={visibleName} onDelete={deleteContact} />
