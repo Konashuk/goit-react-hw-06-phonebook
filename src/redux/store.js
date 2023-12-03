@@ -1,30 +1,70 @@
-import { createStore } from 'redux';
-import { devToolsEnhancer } from '@redux-devtools/extension';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { nanoid } from 'nanoid';
+import {
+  persistReducer,
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-export const newContact = data => {
-  return {
-    type: 'phonebook/contacts',
-    payload: data,
-  };
+const persistConfig = {
+  key: 'contacts',
+  storage,
+  whitelist: ['contacts'],
 };
 
-const initialState = {
-  contacts: [],
-  filters: '',
-};
+// const localData = () => {
+//   const persistedStateJSON = localStorage.getItem(`persist:contacts`);
+//   const persistedState = JSON.parse(persistedStateJSON);
+//   return persistedState.contacts;
+// };
+// console.log(localData());
 
-const rootReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'phonebook/contacts':
-      return {
-        ...state,
-        contacts: [...state.contacts, action.payload],
-      };
-    default:
-      return state;
-  }
-};
+const contactsSlice = createSlice({
+  name: 'phonebook',
+  initialState: {
+    contacts: [],
+    filters: '',
+  },
+  reducers: {
+    contacts: {
+      prepare(data) {
+        return {
+          payload: {
+            value: data,
+            id: nanoid(),
+          },
+        };
+      },
+      reducer(state, action) {
+        state.contacts = [...state.contacts, action.payload];
+      },
+    },
+    filters(state, action) {
+      state.filters = action.payload;
+      state.contacts = action.payload;
+    },
+  },
+});
 
-const enhancer = devToolsEnhancer();
+const phonebookReduser = contactsSlice.reducer;
+export const { contacts, filters } = contactsSlice.actions;
 
-export const store = createStore(rootReducer, enhancer);
+const persistedReducer = persistReducer(persistConfig, phonebookReduser);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+
+export const persistor = persistStore(store);
