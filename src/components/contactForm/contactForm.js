@@ -1,7 +1,7 @@
 import { Field, Form, Label, ErrorMas, Button } from './contactForm.styled';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { contacts } from 'redux/store';
+import { addContacts } from 'redux/contactsSlise';
 import * as Yup from 'yup';
 
 const phonebookSchema = Yup.object().shape({
@@ -22,7 +22,7 @@ export const ContactForm = () => {
     if (dataContacts.some(contact => contact.value.name === value.name)) {
       alert('This contact is in your phone book');
     } else {
-      dispatch(contacts(value));
+      dispatch(addContacts(value));
     }
   };
   return (

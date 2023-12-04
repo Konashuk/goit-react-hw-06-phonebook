@@ -1,26 +1,10 @@
 import { ContactForm } from 'components/contactForm/contactForm';
 import { Filter } from './filter/filter';
 import { ContactList } from './contacklist/contactList';
-
-// const KeyLocalContact = 'contacts';
+import { useSelector } from 'react-redux';
 
 export const Phonebooks = () => {
-  // const [contacts, setContacts] = useState(() => {
-  //   const savedContact = localStorage.getItem(KeyLocalContact);
-  //   if (savedContact !== null) {
-  //     return JSON.parse(savedContact);
-  //   }
-  //   return [];
-  // });
-  // const [filter, setFilter] = useState('');
-
-  // useEffect(() => {
-  //   localStorage.setItem(KeyLocalContact, JSON.stringify(contacts));
-  // }, [contacts]);
-
-  // const deleteContact = nameId => {
-  //   setContacts(prevCont => prevCont.filter(item => item.id !== nameId));
-  // };
+  const dataContacts = useSelector(state => state.contacts);
 
   return (
     <div>
@@ -28,13 +12,8 @@ export const Phonebooks = () => {
 
       <ContactForm />
       <h2>Contacts</h2>
-      {/* <Filter filters={filter} onUpdateFilter={filterByName} /> */}
       <Filter />
-      {/* {contacts.length > 0 && (
-        <ContactList names={visibleName} onDelete={deleteContact} />
-   
-      )} */}
-      <ContactList />
+      {dataContacts.length > 0 && <ContactList />}
     </div>
   );
 };
